@@ -1,0 +1,35 @@
+Meet OSTKIT — The Godmode OSINT Multitool
+
+This isn’t your grandma’s script kiddie tool. OSTKIT is an absolute beast, a cyber-sleuth’s ultimate Swiss Army knife that tears through the digital shadows with surgical precision and raw power.
+
+With just a simple ! prefix, !ReconX unleashes a relentless barrage of reconnaissance commands that can instantly tear down walls of anonymity, rip open social profiles, expose buried email addresses, and map entire digital empires — all from your terminal.
+
+Why it’s OP:
+
+Lightning-Fast Whois & DNS Info:
+With !whois and !dns, you get every single detail about domains—registrar info, DNS records, subdomains—unraveled in seconds like an open book.
+
+Social Media Hunter on Steroids:
+!sherlock hunts usernames across hundreds of platforms faster than any human could type, scraping every corner of the internet to map your target’s social footprint.
+
+Email & Breach Shredder:
+!emailcheck and !breach slice through leaked databases and breach dumps, unearthing compromised emails, passwords, and hidden profiles that others miss.
+
+Google Dork Master:
+!google isn’t just a search—it’s a surgical strike using the most deadly Google dorks to surface hidden files, indexed secrets, and classified info lurking deep in the web.
+
+Global IP Hunter:
+!ipgeo and !iplookup instantly locate IPs down to street-level precision, revealing ISP, host, and geo-data like a digital bloodhound.
+
+Phone Number Seeker:
+!phone tracks phone data, exposing connected profiles and related intel that most tools don’t even touch.
+
+Deep URL Analyzer:
+!urlinfo tears apart suspicious links to reveal metadata, server info, reputation scores, and potential threats.
+
+Automated, Modular, Customizable:
+Every command is a precision-guided missile, automated and optimized for max info extraction. Plug in new modules, chain commands, automate entire investigations in minutes.
+
+In short:
+
+OSTKIT doesn’t just gather intel — it dominates. It’s like having an army of elite cyber spies at your fingertips, turning every command into a full-scale digital reconnaissance operation. Whether you’re tracking a target’s digital footprint, hunting leaked data, or mapping entire networks, this multitool owns the OSINT battlefield.
