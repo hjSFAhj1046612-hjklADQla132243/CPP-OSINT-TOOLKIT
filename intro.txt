@@ -2,7 +2,7 @@ Meet OSTKIT — The Godmode OSINT Multitool
 
 This isn’t your grandma’s script kiddie tool. OSTKIT is an absolute beast, a cyber-sleuth’s ultimate Swiss Army knife that tears through the digital shadows with surgical precision and raw power.
 
-With just a simple ! prefix, !ReconX unleashes a relentless barrage of reconnaissance commands that can instantly tear down walls of anonymity, rip open social profiles, expose buried email addresses, and map entire digital empires — all from your terminal.
+With just a simple ! prefix, OSTKIT unleashes a relentless barrage of reconnaissance commands that can instantly tear down walls of anonymity, rip open social profiles, expose buried email addresses, and map entire digital empires — all from your terminal.
 
 Why it’s OP:
 
