@@ -1,5 +1,6 @@
 # CPP-OSINT-TOOLKIT
-This repository contains a simple to navigate OSINT Toolkit in C++ made for gathering public information.
+A powerful, easy-to-use OSINT (Open Source Intelligence) multitool written in C++, designed to streamline and accelerate the process of gathering public information.
+With a simple command-driven interface, this toolkit enables fast reconnaissance and digital footprint mapping—perfect for researchers, security professionals, and anyone diving into open-source investigations.
 
 # TUTORIALS
 ## step-by-step
@@ -35,3 +36,24 @@ or
 .\ostkit.exe
 
 And you're done!
+
+# Tool itself
+## Prefix
+The prefix when you're running a command is "!", type "!help" in your terminal to view all the commands.
+
+## List of (most) Commands
+!whois <domain>
+!dns <domain>
+!ipgeo <ip>
+!google <query>
+!sherlock <username>
+!harvest <domain>
+!subdomains <domain>
+!emailcheck <email>
+!iplookup <ip>
+!breach <email>
+!phone <number>
+!urlinfo <url>
+!social <domain>
+!help
+
